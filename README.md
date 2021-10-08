@@ -136,6 +136,13 @@ For specific details on how to run:
 
 ![demo](https://user-images.githubusercontent.com/11562617/72547657-540e7800-388d-11ea-83c6-49dfea2a0607.gif)
 
+## PYTHON
+To run the an object detection demo with python (example with yolov4):
+```
+python darknetTR.py build/yolo4_fp16.rt --video=demo/yolo_test.mp4
+```
+
+
 ## tkDNN on Windows 10 (experimental)
 
 For specific details on how to run tkDNN on Windows 10 see [HERE](./docs/windows.md).

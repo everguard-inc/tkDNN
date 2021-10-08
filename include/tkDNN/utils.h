@@ -116,6 +116,12 @@ typedef enum {
   ERROR_CUDNNvsTENSORRT = 8    
 } resultError_t;
 
+void *xmalloc(size_t size);
+void *xcalloc(size_t nmemb, size_t size);
+void malloc_error();
+void calloc_error();
+void realloc_error();
+
 void printCenteredTitle(const char *title, char fill, int dim = 30);
 bool fileExist(const char *fname);
 void downloadWeightsifDoNotExist(const std::string& input_bin, const std::string& test_folder, const std::string& weights_url);
