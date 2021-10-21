@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 #include <signal.h>
 #include <stdlib.h>     /* srand, rand */
@@ -17,7 +18,11 @@ void sig_handler(int signo) {
 }
 
 int main(int argc, char *argv[]) {
-
+    
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
     std::cout<<"detection\n";
     signal(SIGINT, sig_handler);
 
@@ -119,7 +124,13 @@ int main(int argc, char *argv[]) {
             break;
     
         //inference
+        auto t1 = high_resolution_clock::now();
         detNN->update(batch_dnn_input, n_batch);
+        auto t2 = high_resolution_clock::now();
+        auto ms_int = duration_cast<milliseconds>(t2 - t1);
+        duration<double, std::milli> ms_double = t2 - t1;
+        std::cout << ms_double.count() << "ms inference \n";
+        
         detNN->draw(batch_frame);
 
         if(show){
@@ -136,7 +147,7 @@ int main(int argc, char *argv[]) {
     double mean = 0; 
     
     std::cout<<COL_GREENB<<"\n\nTime stats:\n";
-   std::cout<<"Min: "<<*std::min_element(detNN->stats.begin(), detNN->stats.end())/n_batch<<" ms\n";    
+    std::cout<<"Min: "<<*std::min_element(detNN->stats.begin(), detNN->stats.end())/n_batch<<" ms\n";    
     std::cout<<"Max: "<<*std::max_element(detNN->stats.begin(), detNN->stats.end())/n_batch<<" ms\n";    
     for(int i=0; i<detNN->stats.size(); i++) mean += detNN->stats[i]; mean /= detNN->stats.size();
     std::cout<<"Avg: "<<mean/n_batch<<" ms\t"<<1000/(mean/n_batch)<<" FPS\n"<<COL_END;   
@@ -144,4 +155,5 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
 
